@@ -48,11 +48,17 @@
                 </div>
               </div>
               <!-- 好物推荐 -->
+              <div class="title">
+                <h3>好物推荐</h3>
+                <span>新鲜出炉 品质靠谱</span>
+              </div>
               <div class="goodsRecommend">
                 <div class="goodsCard" v-for="i in 6" :key="i">
                   <van-image
                     class="goodsImage"
+                    radius="8px"
                     fit="cover"
+                    lazy-load
                     src="https://yanxuan-item.nosdn.127.net/ddb4a80ac97a175bc633f0a53076815a.jpg"
                   />
                   <p class="goodsTitle">儿童多色圆领印花短袖T恤110-160cm</p>
@@ -109,6 +115,7 @@
     }
   }
   nav{
+    background-color: #f0f9f4;
     .van-sticky{
       top:44px;
     }
@@ -128,11 +135,13 @@
     }
   main{
     .classBox{
-      margin:5px 5px 5px 13px;
+      background-color: #fff;
+      margin: 5px 5px 5px 13px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-around;
+      border-radius: 8px;
       .classItem{
         margin: 0 10px 5px 0;
         width:64px ;
@@ -158,6 +167,7 @@
       flex-wrap: nowrap;
       overflow-x: auto;
       overflow-y: hidden;
+      margin-left:9px;
       &::-webkit-scrollbar{// 滚动条整体
           background:none;
       }
@@ -166,9 +176,12 @@
         height: 233px;
         text-align: center;
         margin-right: 10px;
+        border-radius: 8px;
+        background-color: #fff;
         .goodsImage{
           width: 160px;
           height: 160px;
+          
         }
         .goodsTitle {
           width: 135px;
@@ -176,7 +189,7 @@
           text-overflow:ellipsis;
           font-size: 15px;
           padding: 0px 10px;
-          text-indent: 10px;
+          // text-indent: 10px;
           margin-right: 5px;
         }
         p{
@@ -186,12 +199,27 @@
           font-size: 18px;
           margin-top: 5px;
           color:red;
-          font-weight: 600;
+          font-weight: 500;
         }
       }
       .goodsCard:last-child {
-        margin: 0;
+        margin-right: 1;
       }
+    }
+  }
+  .title{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    h3 {
+      font-size: 16px;
+      font-weight: 400;
+      margin-left: 40px;
+    }
+    span {
+      margin: 16px 10px;
+      font-size: 12px;
+      color:#888;
     }
   }
 }
