@@ -37,6 +37,20 @@
             </van-swipe>
         </div>
       </section>
+      <!-- 分类 -->
+      <main>
+        <div class="classBox">
+          <div class="classItem" v-for="i in 8" :key="i" >
+            <van-image
+              class="classImages"
+              fit="cover"
+              src="https://yanxuan.nosdn.127.net/79b904ccd106d3875a90d4430f2e8ad2.png?quality=95&imageView"
+              lazy-load
+            />
+            <p class="classTitle">网易黑猪</p>
+          </div>
+        </div>
+      </main>
     </div>
   </template>
   
@@ -90,6 +104,30 @@
         width: 100%;
         height: 200px;
         }
+    }
+  }
+  main{
+    margin:5px;
+    .classBox{
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-around;
+      .classItem{
+        margin: 0 10px 5px 0;
+        width:64px ;
+        height: 85px;
+        .classImages{
+          width: 60px;
+          height: 60px;
+        }
+        .classTitle{
+          margin: 0;
+          font-size: 14px;
+          overflow:hidden;
+          text-overflow:ellipsis;
+        }
+      }
     }
   }
   </style>
