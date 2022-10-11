@@ -17,40 +17,44 @@
       </header>
       <!-- 导航栏 -->
       <nav>
-        <van-tabs class="tabs">
+        <van-tabs class="tabs" sticky offset-top="44px">
           <van-tab  v-for="index in navbsList" :title="index" :key="index">
+            <!-- 轮播图 -->
+            <section>
+              <div class="main">
+                  <van-swipe :autoplay="3000">
+                      <van-swipe-item v-for="(image, index) in images" :key="index">
+                          <van-image
+                              class="swipeImages"
+                              fit="cover"
+                              :src="image"
+                              lazy-load
+                          />
+                      </van-swipe-item>
+                  </van-swipe>
+              </div>
+            </section>
+            <main>
+              <!-- 分类 -->
+              <div class="classBox">
+                <div class="classItem" v-for="i in 8" :key="i" >
+                  <van-image
+                    class="classImages"
+                    fit="cover"
+                    src="https://yanxuan.nosdn.127.net/79b904ccd106d3875a90d4430f2e8ad2.png?quality=95&imageView"
+                    lazy-load
+                  />
+                  <p class="classTitle">网易黑猪</p>
+                </div>
+              </div>
+              <!-- 好物推荐 -->
+              <div class="goodsRecommend">
+
+              </div>
+            </main>
           </van-tab>
         </van-tabs>
       </nav>
-      <!-- 轮播图 -->
-      <section>
-        <div class="main">
-            <van-swipe :autoplay="3000">
-                <van-swipe-item v-for="(image, index) in images" :key="index">
-                    <van-image
-                        class="swipeImages"
-                        fit="cover"
-                        :src="image"
-                        lazy-load
-                    />
-                </van-swipe-item>
-            </van-swipe>
-        </div>
-      </section>
-      <!-- 分类 -->
-      <main>
-        <div class="classBox">
-          <div class="classItem" v-for="i in 8" :key="i" >
-            <van-image
-              class="classImages"
-              fit="cover"
-              src="https://yanxuan.nosdn.127.net/79b904ccd106d3875a90d4430f2e8ad2.png?quality=95&imageView"
-              lazy-load
-            />
-            <p class="classTitle">网易黑猪</p>
-          </div>
-        </div>
-      </main>
     </div>
   </template>
   
@@ -69,10 +73,15 @@
   
   <style lang="less" scoped>
   header {
+    background-color: #fff;
     display: flex;
     align-items: center;
     width: 100%;
     justify-content: space-evenly;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
     .logoBox{
       .logo{
         // margin-left: 10px;
@@ -92,23 +101,26 @@
     }
   }
   nav{
+    .van-sticky{
+      top:44px;
+    }
     .tabs:first-child{
       margin-left: -8px;
     }
-  }
-  section{
-    margin: 5px;
+    
+    section{
+    margin:49px 5px 5px 13px;
     .main{
         
         .swipeImages{
         width: 100%;
         height: 200px;
         }
+      }
     }
-  }
   main{
-    margin:5px;
     .classBox{
+      margin:5px 5px 5px 13px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -117,6 +129,7 @@
         margin: 0 10px 5px 0;
         width:64px ;
         height: 85px;
+        text-align: center;
         .classImages{
           width: 60px;
           height: 60px;
@@ -129,5 +142,12 @@
         }
       }
     }
+    .goodsRecommend{
+      width: 100%;
+      height: 300px;
+      background-color: pink;
+      }
+    }
   }
+  
   </style>
