@@ -49,7 +49,15 @@
               </div>
               <!-- 好物推荐 -->
               <div class="goodsRecommend">
-
+                <div class="goodsCard" v-for="i in 6" :key="i">
+                  <van-image
+                    class="goodsImage"
+                    fit="cover"
+                    src="https://yanxuan-item.nosdn.127.net/ddb4a80ac97a175bc633f0a53076815a.jpg"
+                  />
+                  <p class="goodsTitle">儿童多色圆领印花短袖T恤110-160cm</p>
+                  <p class="goodsPirce">￥59.00</p>
+                </div>
               </div>
             </main>
           </van-tab>
@@ -145,9 +153,47 @@
     .goodsRecommend{
       width: 100%;
       height: 300px;
-      background-color: pink;
+      //background-color: pink;
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      overflow-y: hidden;
+      &::-webkit-scrollbar{// 滚动条整体
+          background:none;
+      }
+      .goodsCard{
+        width: 160px;
+        height: 233px;
+        text-align: center;
+        margin-right: 10px;
+        .goodsImage{
+          width: 160px;
+          height: 160px;
+        }
+        .goodsTitle {
+          width: 135px;
+          overflow: hidden;
+          text-overflow:ellipsis;
+          font-size: 15px;
+          padding: 0px 10px;
+          text-indent: 10px;
+          margin-right: 5px;
+        }
+        p{
+          margin: 0;
+        }
+        .goodsPirce{
+          font-size: 18px;
+          margin-top: 5px;
+          color:red;
+          font-weight: 600;
+        }
+      }
+      .goodsCard:last-child {
+        margin: 0;
       }
     }
   }
+}
   
   </style>
