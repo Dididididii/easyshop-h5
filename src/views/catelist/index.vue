@@ -1,5 +1,5 @@
 <template>
-  <div class="cate">
+  <div class="cateContext">
     <nav>
       <van-search @click="$router.push('/search')" input-align="center" v-model="value" placeholder="请输入搜索关键词" />
     </nav>
