@@ -32,9 +32,8 @@ export default {
     }
   },
   created() {
-    console.log(this.$route.path);
+    // 判断路径选择底部标签位置
     this.ifActive(this.$route.path)
-    
   }
 }
 </script>

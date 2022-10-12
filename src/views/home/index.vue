@@ -9,7 +9,7 @@
           v-model="searchText"
           show-action
           placeholder="搜索商品"
-          @click="toSearch"
+          @click="$router.push('/search')"
         >
           <template #action>
             <div  class="searchBtn">登录</div>
@@ -116,11 +116,6 @@
               images:['http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg'],
               active:0
           }
-      },
-      methods:{
-        toSearch(){
-          this.$router.push('/search?fromPage=index')
-        }
       }
   }
   </script>
