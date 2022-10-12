@@ -1,11 +1,11 @@
 <template>
     <div>
         <router-view />
-        <van-tabbar placeholder v-model="active" active-color="red">
-            <van-tabbar-item icon="wap-home-o">首页</van-tabbar-item>
-            <van-tabbar-item icon="coupon-o">分类</van-tabbar-item>
-            <van-tabbar-item icon="shopping-cart-o">购物车</van-tabbar-item>
-            <van-tabbar-item icon="contact">个人中心</van-tabbar-item>
+        <van-tabbar  placeholder v-model="active" active-color="red">
+            <van-tabbar-item to="/" replac icon="wap-home-o">首页</van-tabbar-item>
+            <van-tabbar-item to="/catelist" replac icon="coupon-o">分类</van-tabbar-item>
+            <van-tabbar-item to="/cart" replac icon="shopping-cart-o">购物车</van-tabbar-item>
+            <van-tabbar-item to="contact" replac  icon="contact">个人中心</van-tabbar-item>
         </van-tabbar>
     </div>
 </template>
@@ -17,6 +17,24 @@ export default {
     return {
       active:0
     }
+  },
+  methods:{
+    ifActive(path){
+        if(path === '/') {
+            this.active = 0
+        } else if(path === '/catelist') {
+            this.active = 1
+        } else if (path === '/cart') {
+            this.active = 2
+        } else if (path === '/contact') {
+            this.active = 3
+        }
+    }
+  },
+  created() {
+    console.log(this.$route.path);
+    this.ifActive(this.$route.path)
+    
   }
 }
 </script>
