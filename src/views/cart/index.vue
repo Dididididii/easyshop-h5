@@ -73,5 +73,11 @@ export default {
   .van-card__thumb {
     width: 120px;
   }
+  .van-submit-bar{
+    bottom: 50px;
+  }
+  .goodsList {
+    margin-bottom: 55px;
+  }
 
 </style>
