@@ -65,6 +65,23 @@
                   <p class="goodsPirce">￥59.00</p>
                 </div>
               </div>
+              <!-- 猜你喜欢 -->
+              <div class="title">
+                <h3>猜你喜欢</h3>
+              </div>
+              <div class="goodsLike">
+                <div class="goodsCard" v-for="i in 6" :key="i">
+                  <van-image
+                    class="goodsImage"
+                    radius="8px"
+                    fit="cover"
+                    lazy-load
+                    src="https://yanxuan-item.nosdn.127.net/ddb4a80ac97a175bc633f0a53076815a.jpg"
+                  />
+                  <p class="goodsTitle">儿童多色圆领印花短袖T恤110-160cm</p>
+                  <p class="goodsPirce">￥59.00</p>
+                </div>
+              </div>
             </main>
           </van-tab>
         </van-tabs>
@@ -160,8 +177,8 @@
       }
     }
     .goodsRecommend{
-      width: 100%;
-      height: 300px;
+      width: 374px;
+      // height: 300px;
       //background-color: pink;
       display: flex;
       flex-wrap: nowrap;
@@ -171,20 +188,21 @@
       &::-webkit-scrollbar{// 滚动条整体
           background:none;
       }
-      .goodsCard{
+    }
+    .goodsCard{
         width: 160px;
         height: 233px;
         text-align: center;
-        margin-right: 10px;
+        margin: 5px;
         border-radius: 8px;
         background-color: #fff;
         .goodsImage{
           width: 160px;
           height: 160px;
-          
         }
         .goodsTitle {
           width: 135px;
+          height: 40px;
           overflow: hidden;
           text-overflow:ellipsis;
           font-size: 15px;
@@ -205,6 +223,11 @@
       .goodsCard:last-child {
         margin-right: 1;
       }
+    .goodsLike{
+      margin-left: 5px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
     }
   }
   .title{
@@ -214,7 +237,7 @@
     h3 {
       font-size: 16px;
       font-weight: 400;
-      margin-left: 40px;
+      // margin-left: 40px;
     }
     span {
       margin: 16px 10px;
