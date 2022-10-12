@@ -1,5 +1,5 @@
 <template>
-    <div class="home">
+    <div class="context">
       <!-- 头部区域 -->
       <header>
         <div class="logoBox">
@@ -8,10 +8,11 @@
         <van-search
           v-model="searchText"
           show-action
-          placeholder="请输入搜索关键词"
+          placeholder="搜索商品"
+          @click="toSearch"
         >
           <template #action>
-            <div class="searchBtn">搜索</div>
+            <div  class="searchBtn">登录</div>
           </template>
         </van-search>
       </header>
@@ -109,11 +110,17 @@
       name:'easy-Home',
       data(){
           return {
+              isToken:false,
               navbsList:['首页','居家','美食','服饰','母婴','个护','严选','数码','运动','杂项'],
               searchText:'',
               images:['http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg'],
               active:0
           }
+      },
+      methods:{
+        toSearch(){
+          this.$router.push('/search?fromPage=index')
+        }
       }
   }
   </script>

@@ -6,7 +6,17 @@ Vue.use(VueRouter)
 const routes = [
   {
     path:'/',
-    component:()=> import('@/views/home/index.vue')
+    component:()=> import('@/views/Layout.vue'),
+    children:[
+      {
+        path:'/',
+        component:()=>import('@/views/home/index.vue')
+      }
+    ]
+  },
+  {
+    path:'/search',
+    component:()=>import('@/views/search/index.vue')
   }
 ]
 
