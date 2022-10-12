@@ -17,8 +17,8 @@
       </header>
       <!-- 导航栏 -->
       <nav>
-        <van-tabs class="tabs" sticky offset-top="44px">
-          <van-tab  v-for="index in navbsList" :title="index" :key="index">
+        <van-tabs v-model="active" class="tabs" sticky offset-top="44px">
+          <van-tab  v-for="i in navbsList" :title="i" :key="i">
             <!-- 轮播图 -->
             <section>
               <div class="main">
@@ -34,7 +34,7 @@
                   </van-swipe>
               </div>
             </section>
-            <main>
+            <main v-if="active === 0">
               <!-- 分类 -->
               <div class="classBox">
                 <div class="classItem" v-for="i in 8" :key="i" >
@@ -83,6 +83,21 @@
                 </div>
               </div>
             </main>
+            <main v-else>
+              <div class="goodsLike">
+                <div class="goodsCard" v-for="i in 6" :key="i">
+                  <van-image
+                    class="goodsImage"
+                    radius="8px"
+                    fit="cover"
+                    lazy-load
+                    src="https://yanxuan-item.nosdn.127.net/ddb4a80ac97a175bc633f0a53076815a.jpg"
+                  />
+                  <p class="goodsTitle">儿童多色圆领印花短袖T恤110-160cm</p>
+                  <p class="goodsPirce">￥59.00</p>
+                </div>
+              </div>
+            </main>
           </van-tab>
         </van-tabs>
       </nav>
@@ -96,7 +111,8 @@
           return {
               navbsList:['首页','居家','美食','服饰','母婴','个护','严选','数码','运动','杂项'],
               searchText:'',
-              images:['http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg']
+              images:['http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg'],
+              active:0
           }
       }
   }
