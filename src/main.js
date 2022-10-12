@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import { Search,Tab, Tabs,Swipe, SwipeItem,Lazyload,Image as VanImage,Tabbar, TabbarItem,Icon  } from 'vant'
+import { Search,Tab, Tabs,Swipe, SwipeItem,Lazyload,Image as VanImage,Tabbar, TabbarItem,Icon,Sidebar, SidebarItem  } from 'vant'
 
 Vue.config.productionTip = false
 
@@ -16,6 +16,8 @@ Vue.use(Lazyload)
 Vue.use(VanImage)
 Vue.use(Tabbar)
 Vue.use(TabbarItem)
+Vue.use(Sidebar)
+Vue.use(SidebarItem)
 
 new Vue({
   router,
