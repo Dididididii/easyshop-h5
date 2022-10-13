@@ -21,8 +21,7 @@
             <van-checkbox v-model="goodsChecked"></van-checkbox>
             <van-image
               style="margin-left: 10px;"
-              width="5.5rem"
-              height="5.5rem"
+              class="cartImages"
               fit="cover"
               src="https://img01.yzcdn.cn/vant/cat.jpeg"
             />
@@ -74,6 +73,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.cartImages{
+  width: 88px;
+  height: 88px;
+}
   .goods-card {
     margin: 0;
     background-color: white;

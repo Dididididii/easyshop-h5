@@ -1,6 +1,6 @@
 <template>
   <div class="cateContext">
-    <nav>
+    <nav class="navBar">
       <van-search @click="$router.push('/search')" input-align="center" v-model="value" placeholder="请输入搜索关键词" />
     </nav>
   <main class="context">
@@ -9,10 +9,9 @@
     </van-sidebar>
     <div class="cateBox">
       <div class="cateList">
-          <div div class="cateItem" v-for="i in 6" :key="i">
+          <div div class="cateItem" v-for="i in 60" :key="i">
             <van-image
-              width="4rem"
-              height="4rem"
+              class="cateImages"
               fit="contain"
               src="https://yanxuan.nosdn.127.net/3102b963e7a3c74b9d2ae90e4380da65.png?quality=95&imageView"
             />
@@ -38,17 +37,43 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.van-sidebar{
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: calc(100vh - 104px);
+  &::-webkit-scrollbar{// 滚动条整体
+    background:none;
+  }
+}
+.navBar{
+  width: 100%;
+  position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+.cateImages{
+  width: 64px;
+  height:64px;
+}
 .context {
   display: flex;
+  margin-top:54px;
   .cateBox{
     flex: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
     height: calc(100vh - 104px);
+    // width: calc(100vh - 80px);;
+    &::-webkit-scrollbar{// 滚动条整体
+      background:none;
+    }
     background-color: #fff;
     .cateList {
       display: flex;
       flex-wrap: wrap;
       .cateItem {
-        margin: 4px;
+        margin: 2.764px;
         width: 64px;
         height: 90px;
         overflow: hidden;

@@ -18,7 +18,7 @@
       </header>
       <!-- 导航栏 -->
       <nav>
-        <van-tabs v-model="active" class="tabs" sticky offset-top="44px">
+        <van-tabs v-model="active" class="tabs" sticky offset-top="1.4rem">
           <van-tab  v-for="i in navbsList" :title="i" :key="i">
             <!-- 轮播图 -->
             <section>
@@ -159,7 +159,7 @@
     }
     
     section{
-    margin:49px 5px 5px 13px;
+    margin:59px 5px 5px 13px;
     .main{
         
         .swipeImages{
@@ -214,6 +214,7 @@
         margin: 5px;
         border-radius: 8px;
         background-color: #fff;
+        padding-bottom: 5px;
         .goodsImage{
           width: 160px;
           height: 160px;

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import 'amfe-flexible'
 import { Search,Tab, Tabs,Swipe, SwipeItem,Lazyload,Image as VanImage,Tabbar, TabbarItem,Icon,Sidebar, SidebarItem,NavBar,SwipeCell,Card,Button,SubmitBar,Checkbox,Empty  } from 'vant'
 
 Vue.config.productionTip = false
