@@ -54,7 +54,7 @@
                 <span>新鲜出炉 品质靠谱</span>
               </div>
               <div class="goodsRecommend">
-                <div class="goodsCard" v-for="i in 6" :key="i">
+                <div class="goodsCard" v-for="i in 6" :key="i" @click="toGoods">
                   <van-image
                     class="goodsImage"
                     radius="8px"
@@ -71,7 +71,7 @@
                 <h3>猜你喜欢</h3>
               </div>
               <div class="goodsLike">
-                <div class="goodsCard" v-for="i in 6" :key="i">
+                <div class="goodsCard" v-for="i in 6" :key="i" @click="toGoods">
                   <van-image
                     class="goodsImage"
                     radius="8px"
@@ -86,7 +86,7 @@
             </main>
             <main v-else>
               <div class="goodsLike">
-                <div class="goodsCard" v-for="i in 6" :key="i">
+                <div class="goodsCard" v-for="i in 6" :key="i" @click="toGoods">
                   <van-image
                     class="goodsImage"
                     radius="8px"
@@ -116,6 +116,11 @@
               images:['http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg'],
               active:0
           }
+      },
+      methods:{
+        toGoods(){
+          this.$router.push('/goods?id=10002')
+        }
       }
   }
   </script>

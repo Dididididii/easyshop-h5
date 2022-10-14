@@ -23,8 +23,12 @@ const routes = [
       {
         path:'contact',
         component:()=>import('@/views/contact/index.vue')
-      }
+      },
     ]
+  },
+  {
+    path:'/goods',
+    component:()=>import('@/views/goods/index.vue')
   },
   {
     path:'/search',
