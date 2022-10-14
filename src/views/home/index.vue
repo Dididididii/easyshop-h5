@@ -90,9 +90,6 @@
           }
       },
       methods:{
-        toGoods(){
-          this.$router.push('/goods?id=10002')
-        }
       }
   }
   </script>
