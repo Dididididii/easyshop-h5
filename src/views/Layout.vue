@@ -22,7 +22,7 @@ export default {
     ifActive(path){
         if(path === '/') {
             this.active = 0
-        } else if(path === '/catelist') {
+        } else if(path === '/category') {
             this.active = 1
         } else if (path === '/cart') {
             this.active = 2

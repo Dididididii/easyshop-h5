@@ -90,6 +90,8 @@ export default {
         .cateName{
           margin: 0;
           width: 100%;
+          height: 40px;
+          overflow: hidden;
           font-size: 14px;
           text-align: center;
         }
