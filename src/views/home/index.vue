@@ -20,7 +20,8 @@
       <nav>
         <van-tabs v-model="active" class="tabs" sticky offset-top="1.4rem">
           <van-tab  v-for="item in navbsList" :title="item.name" :key="item.id">
-            <!-- 轮播图 -->
+            <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
+              <!-- 轮播图 -->
             <section>
               <div class="main">
                   <van-swipe :autoplay="3000">
@@ -61,7 +62,15 @@
                 <h3>猜你喜欢</h3>
               </div>
               <div class="goodsLike">
-                <easyCard />
+                <van-list
+                  offset="100"
+                  v-model="loading"
+                  :finished="finished"
+                  finished-text="没有更多了"
+                  @load="onLoad"
+                >
+                  <easyCard :goodsList="likeList" />
+                </van-list>
               </div>
             </main>
             <main v-else>
@@ -69,6 +78,7 @@
                 <easyCard :active="active" :goods-list="navbsList[active].goods" />
               </div>
             </main>
+            </van-pull-refresh>
           </van-tab>
         </van-tabs>
       </nav>
@@ -77,19 +87,28 @@
   
   <script>
   import easyCard from '@/components/easy-card.vue'
-  import { getCateList , getBanner,getSimple } from '@/api/home.js'
+  import { getCateList , getBanner,getSimple,getUserLike } from '@/api/home.js'
   export default {
       name:'easy-Home',
       components:{easyCard},
       data(){
           return {
+              isLoading: false,
+              loading:false,
+              finished:false,
               isToken:false,
               navbsList:[],
               searchText:'',
               moveList:[],
               banner:[],
               active:0,
-              simples:[]
+              simples:[],
+              likeList:[],
+              config:{
+                page:1,
+                pageSize:10
+              },
+              counts:0
           }
       },
       methods:{
@@ -112,12 +131,42 @@
         async getSimples() {
           const res = await getSimple()
           this.simples = res.result.newProduct
-        }
+        },
+        async getUserLikes() {
+          const res = await getUserLike(this.config)
+          this.likeList.push(...res.result.items)
+          this.counts = res.result.counts
+        },
+        onLoad() {
+          let timer = null
+          if(timer === null) {
+            timer = setInterval(()=>{
+              this.config.page++
+              this.getUserLikes()
+              this.loading = false
+              if(this.likeList.length >= this.counts) {
+                this.finished = true
+              }
+              clearInterval(timer)
+              timer=null
+            },1000)
+          }
+        },
+        onRefresh() {
+          this.simples=[]
+          this.likeList=[]
+          this.getSimples()
+          this.getUserLikes()
+          this.$toast('刷新成功');
+          this.isLoading = false;          
+        },
       },
       created(){
+        this.likeList=[]
         this.getCateLista()
         this.getHomeBanner()
         this.getSimples()
+        this.getUserLikes()
       }
   }
   </script>
