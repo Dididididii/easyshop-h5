@@ -1,15 +1,15 @@
 <template>
   <div :style="{display:'flex', flexWrap: warp?'wrap':'nowrap',justifyContent: 'space-around'}">
-    <div class="goodsCard" v-for="i in 6" :key="i" @click="toGoods">
+    <div class="goodsCard" v-for="item in goodsList" :key="item.id" @click="toGoods">
         <van-image
             class="goodsImage"
             radius="8px"
             fit="cover"
             lazy-load
-            src="https://yanxuan-item.nosdn.127.net/ddb4a80ac97a175bc633f0a53076815a.jpg"
+            :src="item.picture"
         />
-        <p class="goodsTitle">儿童多色圆领印花短袖T恤110-160cm</p>
-        <p class="goodsPirce">￥59.00</p>
+        <p class="goodsTitle">{{item.name}}</p>
+        <p class="goodsPirce">￥{{item.price}}</p>
     </div>
   </div>
 </template>
@@ -19,8 +19,16 @@ export default {
     name:'easy-Card',
     props:{
         warp:{
-            type:Boolean,
-            default:true
+          type:Boolean,
+          default:true
+        },
+        active:{
+          type:Number,
+          default:0
+        },
+        goodsList:{
+          type:Array,
+          default:()=>[]
         }
     },
     methods:{

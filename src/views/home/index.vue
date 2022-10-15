@@ -19,7 +19,7 @@
       <!-- 导航栏 -->
       <nav>
         <van-tabs v-model="active" class="tabs" sticky offset-top="1.4rem">
-          <van-tab  v-for="i in navbsList" :title="i" :key="i">
+          <van-tab  v-for="item in navbsList" :title="item.name" :key="item.id">
             <!-- 轮播图 -->
             <section>
               <div class="main">
@@ -66,7 +66,7 @@
             </main>
             <main v-else>
               <div class="goodsLike">
-                <easyCard />
+                <easyCard :active="active" :goods-list="$store.state.cate.cateList[active-1].goods" />
               </div>
             </main>
           </van-tab>
@@ -77,19 +77,31 @@
   
   <script>
   import easyCard from '@/components/easy-card.vue'
+  import {getCateList} from '@/api/home.js'
   export default {
       name:'easy-Home',
       components:{easyCard},
       data(){
           return {
               isToken:false,
-              navbsList:['首页','居家','美食','服饰','母婴','个护','严选','数码','运动','杂项'],
+              navbsList:[],
               searchText:'',
               images:['http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg'],
               active:0
           }
       },
       methods:{
+        async getCateLista () {
+          const list = {id:0,name:'首页'}
+          const res = await getCateList('/home/category/head')
+          this.navbsList = res.result
+          this.navbsList.unshift(
+            list
+          )
+        }
+      },
+      created(){
+        this.getCateLista()
       }
   }
   </script>

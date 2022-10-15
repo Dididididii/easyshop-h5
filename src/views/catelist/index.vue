@@ -1,21 +1,21 @@
 <template>
-  <div class="cateContext">
+  <div class="cateContext" v-if="cateList.length>0" >
     <nav class="navBar">
       <van-search @click="$router.push('/search')" input-align="center" v-model="value" placeholder="请输入搜索关键词" />
     </nav>
   <main class="context">
     <van-sidebar v-model="activeKey">
-      <van-sidebar-item v-for="i in cateList" :key="i" :title="i" />
+      <van-sidebar-item v-for="item in cateList" :key="item.id" :title="item.name" />
     </van-sidebar>
     <div class="cateBox">
-      <div class="cateList">
-          <div div class="cateItem" v-for="i in 60" :key="i">
+      <div class="cateList" >
+          <div div class="cateItem" v-for="children in cateList[activeKey].children" :key="children.id">
             <van-image
               class="cateImages"
               fit="contain"
-              src="https://yanxuan.nosdn.127.net/3102b963e7a3c74b9d2ae90e4380da65.png?quality=95&imageView"
+              :src="children.picture"
             />
-              <p class="cateName">茶咖酒具</p>
+              <p class="cateName">{{children.name}}</p>
           </div>
         </div>
       </div>
@@ -24,14 +24,24 @@
 </template>
 
 <script>
+import {getCateList} from '@/api/home.js'
 export default {
     name:'easy-CateList',
     data(){
       return {
         activeKey:0,
-        cateList:['居家','美食','服饰','母婴','个护','严选','数码','运动','杂项'],
+        cateList:[],
         value:''
       }
+    },
+    methods:{
+      async getCateLists(){
+        const res = await getCateList()
+        this.cateList = res.result
+      }
+    },
+    created(){
+      this.getCateLists()
     }
 }
 </script>
