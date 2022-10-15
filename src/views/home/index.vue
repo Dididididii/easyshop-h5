@@ -24,11 +24,11 @@
             <section>
               <div class="main">
                   <van-swipe :autoplay="3000">
-                      <van-swipe-item v-for="(image, index) in images" :key="index">
+                      <van-swipe-item v-for="item in banner" :key="item.id">
                           <van-image
                               class="swipeImages"
                               fit="cover"
-                              :src="image"
+                              :src="item.imgUrl"
                               lazy-load
                           />
                       </van-swipe-item>
@@ -38,14 +38,14 @@
             <main v-if="active === 0">
               <!-- 分类 -->
               <div class="classBox">
-                <div class="classItem" v-for="i in 8" :key="i" >
+                <div class="classItem" v-for="item in moveList" :key="item.id" >
                   <van-image
                     class="classImages"
                     fit="cover"
-                    src="https://yanxuan.nosdn.127.net/79b904ccd106d3875a90d4430f2e8ad2.png?quality=95&imageView"
+                    :src="item.picture"
                     lazy-load
                   />
-                  <p class="classTitle">网易黑猪</p>
+                  <p class="classTitle">{{item.name}}</p>
                 </div>
               </div>
               <!-- 好物推荐 -->
@@ -54,7 +54,7 @@
                 <span>新鲜出炉 品质靠谱</span>
               </div>
               <div class="goodsRecommend">
-                <easyCard :warp="false" />
+                <easyCard :warp="false" :goodsList="simples" />
               </div>
               <!-- 猜你喜欢 -->
               <div class="title">
@@ -66,7 +66,7 @@
             </main>
             <main v-else>
               <div class="goodsLike">
-                <easyCard :active="active" :goods-list="$store.state.cate.cateList[active-1].goods" />
+                <easyCard :active="active" :goods-list="navbsList[active].goods" />
               </div>
             </main>
           </van-tab>
@@ -77,7 +77,7 @@
   
   <script>
   import easyCard from '@/components/easy-card.vue'
-  import {getCateList} from '@/api/home.js'
+  import { getCateList , getBanner,getSimple } from '@/api/home.js'
   export default {
       name:'easy-Home',
       components:{easyCard},
@@ -86,22 +86,38 @@
               isToken:false,
               navbsList:[],
               searchText:'',
-              images:['http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg','http://yjy-xiaotuxian-dev.oss-cn-beijing.aliyuncs.com/picture/2021-04-15/dfc11bb0-4af5-4e9b-9458-99f615cc685a.jpg'],
-              active:0
+              moveList:[],
+              banner:[],
+              active:0,
+              simples:[]
           }
       },
       methods:{
         async getCateLista () {
+          this.moveList=[]
           const list = {id:0,name:'首页'}
           const res = await getCateList('/home/category/head')
           this.navbsList = res.result
           this.navbsList.unshift(
             list
           )
+          for(let i =1;i<=8;i++){
+            this.moveList.push(this.navbsList[i])
+          }
+        },
+        async getHomeBanner() {
+          const res = await getBanner()
+          this.banner = res.result
+        },
+        async getSimples() {
+          const res = await getSimple()
+          this.simples = res.result.newProduct
         }
       },
       created(){
         this.getCateLista()
+        this.getHomeBanner()
+        this.getSimples()
       }
   }
   </script>

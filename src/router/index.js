@@ -13,7 +13,7 @@ const routes = [
         component:()=>import('@/views/home/index.vue')
       },
       {
-        path:'catelist',
+        path:'category',
         component:()=>import('@/views/catelist/index.vue')
       },
       {

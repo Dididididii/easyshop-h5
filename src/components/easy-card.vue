@@ -22,10 +22,6 @@ export default {
           type:Boolean,
           default:true
         },
-        active:{
-          type:Number,
-          default:0
-        },
         goodsList:{
           type:Array,
           default:()=>[]

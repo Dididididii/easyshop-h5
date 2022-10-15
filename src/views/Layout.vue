@@ -3,7 +3,7 @@
         <router-view />
         <van-tabbar  placeholder v-model="active" active-color="red">
             <van-tabbar-item to="/" replac icon="wap-home-o">首页</van-tabbar-item>
-            <van-tabbar-item to="/catelist" replac icon="coupon-o">分类</van-tabbar-item>
+            <van-tabbar-item to="/category" replac icon="coupon-o">分类</van-tabbar-item>
             <van-tabbar-item to="/cart" replac icon="shopping-cart-o">购物车</van-tabbar-item>
             <van-tabbar-item to="contact" replac  icon="contact">个人中心</van-tabbar-item>
         </van-tabbar>
