@@ -1,5 +1,5 @@
 <template>
-  <div class="goodsContext">
+  <div class="goodsContext" v-if="goods.mainPictures">
     <van-nav-bar fixed placeholder left-arrow @click-left="$router.go(-1)">
         <template #title>
             <div class="search" @click="$router.push('/search')">
@@ -11,11 +11,11 @@
     <main>
         <!-- 商品轮播图 -->
         <van-swipe @change="onChange">
-            <van-swipe-item v-for="i in 6" :key="i">
+            <van-swipe-item v-for="item in goods.mainPictures" :key="item">
                 <van-image
                     class="goodsSwiperImage"
-                    fit="fill"
-                    src="https://yanxuan-item.nosdn.127.net/c12d7a462c1d06556be03f54e56a770f.png"
+                    fit="scale-down"
+                    :src="item"
                 />
             </van-swipe-item>
         
@@ -26,8 +26,8 @@
         <!-- 商品名称/价格 -->
         <div class="goodsCard">
             <div class="skuItem">
-                <h3>共唱樱花酒歌酣日本浅樱玻璃酒壶套装180ml</h3>
-                <h3 class="price">￥<span class="yuan">1000</span> <span class="former">￥1200</span></h3>
+                <h3>{{goods.name}}</h3>
+                <h3 class="price">￥<span class="yuan">{{goods.price}}</span> <span class="former" v-if="goods.price!==goods.oldPrice">￥{{goods.oldPrice}}</span></h3>
             </div>
         </div>
         <!-- 商品规格 -->
@@ -37,11 +37,11 @@
                         <template #label>
                             <div class="box">
                                 <van-image
-                                    v-for="i in 3"
-                                    :key="i"
+                                    v-for="item in goods.specs[0].values"
+                                    :key="item.name"
                                     class="goodsImage"
                                     fit="cover"
-                                    src="https://img01.yzcdn.cn/vant/cat.jpeg"
+                                    :src="item.picture"
                                 />
                             </div>
                         </template>
@@ -58,23 +58,23 @@
                             class="userPhoto"
                             fit="cover"
                             round
-                            src="https://img01.yzcdn.cn/vant/cat.jpeg"
+                            :src="goods.evaluationInfo.member.avatar"
                         />
                         <div class="text">
-                            <p class="name">小***贝</p>
-                            <p class="time">5天前</p>
+                            <p class="name">{{goods.evaluationInfo.member.account}}</p>
+                            <p class="time">{{day(goods.evaluationInfo.createTime)}}</p>
                         </div>
                     </div>
                     <div class="appraiseTitle">
-                        <p>上身效果还不错的，宽松的款式是我喜欢的，很显瘦的一款 也比较百搭</p>
+                        <p>{{goods.evaluationInfo.content}}</p>
                     </div>
                     <div class="appraiseImages">
                         <van-image
-                            v-for="i in 3"
-                            :key="i"
+                            v-for="item in goods.evaluationInfo.pictures"
+                            :key="item"
                             class="appraisePhoto"
                             fit="cover"
-                            src="https://img01.yzcdn.cn/vant/cat.jpeg"
+                            :src="item"
                         />
                     </div>
                 </div>
@@ -82,19 +82,19 @@
         </div>
         <div class="goodsImages">
             <van-image
-                v-for="i in 6"
-                :key="i"
+                v-for="item in goods.details.pictures"
+                :key="item"
                 class="goodsImagesItem"
                 fit="cover"
-                src="https://yanxuan-item.nosdn.127.net/2fe238a7ea77c015ce6d5f1792d4b268.jpg"
+                :src="item"
             />
         </div>
     </main>
     <footer>
         <van-goods-action safe-area-inset-bottom>
             <van-goods-action-icon icon="chat-o" text="客服" />
-            <van-goods-action-icon icon="cart-o" text="购物车"  />
             <van-goods-action-icon icon="shop-o" text="店铺"  />
+            <van-goods-action-icon icon="star-o" text="收藏"  />
             <van-goods-action-button type="warning" text="加入购物车" />
             <van-goods-action-button type="danger" text="立即购买" />
         </van-goods-action>
@@ -103,18 +103,37 @@
 </template>
 
 <script>
+import { getGoods } from '@/api/goods'
+import dayjs from 'dayjs'
+var relativeTime = require('dayjs/plugin/relativeTime')
+import * as isLeapYear from 'dayjs/plugin/isLeapYear' // 导入插件
+import 'dayjs/locale/zh-cn' // 导入本地化语言
+dayjs.extend(isLeapYear) // 使用插件
+dayjs.locale('zh-cn') // 使用本地化语言
 export default {
     name:'easy-Goods',
     data(){
         return {
             current: 0,
+            goods:[]
         }
     },
     methods: {
         onChange(index) {
             this.current = index;
         },
+        async getGood() {
+            const res = await getGoods(this.$route.query.id)
+            this.goods = res.result
+        },
+        day(day) {
+            dayjs.extend(relativeTime)
+            return dayjs(day).fromNow() // 22 年前
+        }
     },
+    created() {
+        this.getGood()
+    }
 }
 </script>
 
@@ -128,10 +147,13 @@ export default {
     }
 }
 main {
+    margin-top:5px;
     margin-bottom: 60px;
 }
 .appraiseImages{
     margin-top: 10px;
+    height: 70px;
+    overflow: hidden;
     .appraisePhoto{
         margin-right: 10px;
         width: 64px;
@@ -171,6 +193,9 @@ main {
 }
 .box{
     margin-left: 80px;
+    width: 203px;
+    height: 37px;
+    overflow: hidden;
 }
 .goodsImage{
     height: 32px;

@@ -1,6 +1,6 @@
 <template>
   <div :style="{display:'flex', flexWrap: warp?'wrap':'nowrap',justifyContent: 'space-around'}">
-    <div class="goodsCard" v-for="item in goodsList" :key="item.id" @click="toGoods">
+    <div class="goodsCard" v-for="item in goodsList" :key="item.id" @click="toGoods(item.id)">
         <van-image
             class="goodsImage"
             radius="8px"
@@ -28,8 +28,8 @@ export default {
         }
     },
     methods:{
-        toGoods(){
-          this.$router.push('/goods?id=10002')
+        toGoods(id){
+          this.$router.push(`/goods?id=${id}`)
         }
     }
 }

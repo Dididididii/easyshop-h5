@@ -8,6 +8,7 @@
                 show-action
                 placeholder="请输入商品名称"
                 @cancel="toBack"
+                @input="getTips"
             />
         </form>
     </nav>
@@ -69,6 +70,7 @@
 </template>
 
 <script>
+import { getSearchTips } from '@/api/search'
 export default {
     name:"easy-Search",
     data(){
@@ -79,6 +81,18 @@ export default {
     methods:{
         toBack(){
             this.$router.go(-1)
+        },
+        getTips(e) {
+            let timer = null
+            if(timer !== null){
+                clearTimeout(timer)
+                timer = null
+            }
+            timer = setTimeout(async () => {
+                // console.log(e)
+                const res = await getSearchTips(e)
+                console.log(res);
+            },500)
         }
     }
 }
