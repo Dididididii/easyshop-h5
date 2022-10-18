@@ -1,5 +1,5 @@
 <template>
-  <div class="contactContext">
+  <div class="contactContext" v-if="$store.state.user.profile.token">
     <van-nav-bar
       title="个人中心"
       placeholder 
@@ -10,22 +10,21 @@
         class="userPhoto"
         fit="cover"
         round
-        src="https://img01.yzcdn.cn/vant/cat.jpeg"
+        :src="$store.state.user.profile.avatar"
       />
       <div class="userBox">
         <div class="userName">
-          <p class="name">用户名</p>
-          <p class="number">账号：</p>
+          <p class="name">{{$store.state.user.profile.nickname?$store.state.user.profile.nickname:'无忧商城用户'}}</p>
+          <p class="number">账号：{{$store.state.user.profile.account}}</p>
         </div>
         <van-icon class="set" @click="setShow = true" name="setting-o" />
       </div>
     </div>
     <div class="userCard">
-        <div class="cartItem" v-for="item in cartList" :key="item.title">
+        <div class="cartItem" v-for="item in cartList" :key="item.title" @click="toCollect(item.title)">
           <van-icon class="icon" :name="item.name" />
           <p class="title">{{item.title}}</p>
         </div>
-        
     </div>
     <van-popup v-model="setShow" position="right" :style="{ height: '100%' , width:'100%' }" closeable >
       <div class="setBox">
@@ -34,12 +33,12 @@
             class="setPhoto"
             fit="cover"
             round
-            src="https://img01.yzcdn.cn/vant/cat.jpeg"
+            :src="$store.state.user.profile.avatar"
           />
           <div class="userBox">
             <div class="userName">
-              <p class="name">用户名</p>
-              <p class="number">账号：</p>
+              <p class="name">{{$store.state.user.profile.nickname?$store.state.user.profile.nickname:'无忧商城用户'}}</p>
+              <p class="number">账号：{{$store.state.user.profile.account}}</p>
             </div>
             <van-icon class="right"  name="arrow" />
           </div>
@@ -65,7 +64,7 @@
           </div>
         </div>
       </div>
-      <van-button  type="default" block size="small">退出登录</van-button>
+      <van-button  type="default" block size="small" @click="toBack">退出登录</van-button>
       <van-popup v-model="updateShow" position="right" :style="{ height: '100%', width:'100%' }" >
         <van-nav-bar
           title="标题"
@@ -209,6 +208,16 @@ export default {
       }
     },
     methods:{
+      toCollect(title) {
+        if(title === '收藏') {
+          this.$router.push('/collect')
+        }
+      },
+      toBack(){
+        this.$store.commit('user/setUserInfo',{})
+        this.$toast('退出成功')
+        this.$router.push('/')
+      },
       onAdd() {
         this.$toast('新增地址');
       },

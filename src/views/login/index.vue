@@ -140,24 +140,22 @@ export default {
                 // 账号密码登录
                 if(this.numberAdd==='1') {
                     // 登录
-                    console.log('登录');
-                    console.log('submit', values);
                     try {
                         const res = await loginIsNum({account:values.account,password:values.password})
                         this.$toast('登录成功')
-                        console.log(res)
+                        this.$store.commit('user/setUserInfo',res.result)
+                        this.$router.push(`${this.$route.query.from}`)
                     } catch (error) {
                         this.$toast(error.response.data.message)
                     }
                     
                 } else {
                     // 注册
-                    // console.log('注册');
-                    // console.log('submit', values);
                     try {
                         const res = await registerNum({account:values.account,mobile:values.numPhoto,code:values.numCode,password:values.password,type:'app'})
-                        console.log(res)
                         this.$toast('注册成功')
+                        this.$store.commit('user/setUserInfo',res.result)
+                        this.$router.push(`${this.$route.query.from}`)
                     } catch (error) {
                         this.$toast(error.response.data.message)
                     }
@@ -169,7 +167,8 @@ export default {
                     console.log('登录');
                     try {
                         const res = await loginPhoto({mobile:values.photo,code: values.code})
-                        console.log(res);
+                        this.$store.commit('user/setUserInfo',res.result)
+                        this.$router.push(`${this.$route.query.from}`)
                     } catch (error) {
                         this.$toast(error.response.data.message)
                     }
@@ -178,7 +177,8 @@ export default {
                     console.log('注册');
                     try {
                         const res = await registerPhoto({mobile:values.photo,code: values.code})
-                        console.log(res);
+                        this.$store.commit('user/setUserInfo',res.result)
+                        this.$router.push(`${this.$route.query.from}`)
                     } catch (error) {
                         this.$toast(error.response.data.message)
                     }
@@ -231,6 +231,9 @@ export default {
             }
             
         }
+    },
+    created(){
+        console.log(this.$route.query.from);
     }
 }
 </script>
