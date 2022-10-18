@@ -33,6 +33,10 @@ const routes = [
   {
     path:'/search',
     component:()=>import('@/views/search/index.vue')
+  },
+  {
+    path:'/login',
+    component:()=>import('@/views/login/index.vue')
   }
 ]
 

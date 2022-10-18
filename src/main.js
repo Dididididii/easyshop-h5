@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import 'amfe-flexible'
-import { Search,Tab, Tabs,Swipe, SwipeItem,Lazyload,Image as VanImage,Tabbar, TabbarItem,Icon,Sidebar, SidebarItem,NavBar,SwipeCell,Card,Button,SubmitBar,Checkbox,Empty,Popup,Cell, CellGroup,Field,AddressList,Toast,AddressEdit,GoodsAction, GoodsActionIcon, GoodsActionButton,Sku,List,PullRefresh  } from 'vant'
+import { Search,Tab, Tabs,Swipe, SwipeItem,Lazyload,Image as VanImage,Tabbar, TabbarItem,Icon,Sidebar, SidebarItem,NavBar,SwipeCell,Card,Button,SubmitBar,Checkbox,Empty,Popup,Cell, CellGroup,Field,AddressList,Toast,AddressEdit,GoodsAction, GoodsActionIcon, GoodsActionButton,Sku,List,PullRefresh,Form,RadioGroup, Radio  } from 'vant'
 
 Vue.config.productionTip = false
 
@@ -39,6 +39,9 @@ Vue.use(GoodsActionIcon)
 Vue.use(Sku)
 Vue.use(List)
 Vue.use(PullRefresh)
+Vue.use(Form)
+Vue.use(Radio)
+Vue.use(RadioGroup)
 
 new Vue({
   router,

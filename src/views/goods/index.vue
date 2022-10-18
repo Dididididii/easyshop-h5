@@ -61,7 +61,7 @@
                             :src="goods.evaluationInfo.member.avatar"
                         />
                         <div class="text">
-                            <p class="name">{{goods.evaluationInfo.member.account}}</p>
+                            <p class="name">{{formatName(goods.evaluationInfo.member.account)}}</p>
                             <p class="time">{{day(goods.evaluationInfo.createTime)}}</p>
                         </div>
                     </div>
@@ -145,6 +145,21 @@ export default {
         }
     },
     methods: {
+        formatName(name) {
+            var newStr;
+            if (name.length === 2) {
+                newStr = name.substr(0, 1) + '*';
+            } else if (name.length > 2) {
+                var char = '';
+                for (var i = 0, len = name.length - 2; i < len; i++) {
+                    char += '*';
+                }
+                newStr = name.substr(0, 1) + char + name.substr(-1, 1);
+            } else {
+                newStr = name;
+            }
+            return newStr;
+        },
         openImage(images , index) {
             ImagePreview({
             images,
