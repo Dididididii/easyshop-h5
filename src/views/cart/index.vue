@@ -7,7 +7,7 @@
     />
     <!-- 正常的购物车 -->
     <div class="goodsList" v-if="cartList.length>0" >
-      <van-swipe-cell v-for="item in cartList" :key="item.id">
+      <van-swipe-cell v-for="item in cartList" :key="item.skuId">
         <van-card
           :num="item.count"
           :price="item.price"
@@ -26,6 +26,9 @@
               :src="item.picture"
             />
           </div>
+        </template>
+        <template #num >
+          <van-stepper v-model="item.count" @change="(e)=> onChange(e,item.skuId)" />
         </template>
       </van-card>
         <template #right>
@@ -47,16 +50,16 @@
         <van-button round type="danger" class="bottom-button" @click="$router.push(`/login?from=/cart`)">去登陆</van-button>
       </van-empty>
     </div>
-    <footer>
-      <van-submit-bar :price="3050" button-text="提交订单" @submit="onSubmit">
-        <van-checkbox v-model="checked">全选</van-checkbox>
+    <footer v-if="!noneToken">
+      <van-submit-bar :price="price" button-text="提交订单" @submit="onSubmit">
+        <van-checkbox v-model="allCheck" >全选</van-checkbox>
       </van-submit-bar>
     </footer>
   </div>
 </template>
 
 <script>
-import { getCart,delCart } from '@/api/cart'
+import { getCart,delCart,updatCart } from '@/api/cart'
 export default {
     name:'easy-cart',
     data(){
@@ -64,11 +67,15 @@ export default {
         checked:false,
         noneToken:false,
         cartList:[],
-
       }
     },
     methods:{
+      async onChange(e,id){
+        // console.log(e,id);
+        await updatCart({id,count:e})
+      },
       onSubmit(){
+        this.$router.push('/place')
       },
       async getCartList() {
         const res = await getCart()
@@ -85,7 +92,32 @@ export default {
       } else {
         this.noneToken = true
       }
+    },
+    computed:{
+      allCheck:{
+        get() {
+          let isCheck = this.cartList.filter(item=>item.selected)
+          if(isCheck.length===this.cartList.length) {
+            return true
+          }
+          return false
+        },
+        set(val) {
+          // console.log(val);
+          this.cartList.forEach(item=>{
+            item.selected=val
+          })
+      }
+    },
+    price() {
+      let num = 0
+      let checkGoods = this.cartList.filter(item=>item.selected)
+      checkGoods.forEach(item => {
+        num = num+item.price*item.count*100
+      })
+      return num
     }
+  }
 }
 </script>
 

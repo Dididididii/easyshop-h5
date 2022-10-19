@@ -42,6 +42,10 @@ const routes = [
   {
     path:'/collect',
     component:()=>import('@/views/collect/index.vue')
+  },
+  {
+    path:'/place',
+    component:()=>import('@/views/place/index.vue')
   }
 ]
 
@@ -59,7 +63,7 @@ router.beforeEach((to, from, next) => {
     }
   }
 
-  if(to.path === '/contact' || to.path === '/collect') {
+  if(to.path === '/contact' || to.path === '/collect' || to.path === '/place') {
     // 个人中心页
     if(store.state.user.profile.token) {
       next()

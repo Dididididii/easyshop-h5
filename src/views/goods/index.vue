@@ -290,6 +290,7 @@ export default {
                 try {
                     await addCart({skuId:e.selectedSkuComb.id,count:e.selectedNum})
                     this.$toast('加入购物车成功')
+                    this.show=false
                 } catch (error) {
                     this.$toast(error.response.data.message)
                 }

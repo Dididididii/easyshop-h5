@@ -20,3 +20,10 @@ export const addCart =(config) => {
 export const delCart = (config) =>{
     return request('/member/cart','DELETE',{...config})
 }
+
+/**
+ * 修改购物车商品
+ */
+export const updatCart = (config) =>{
+    return request(`/member/cart/${config.id}`,'put',{ count:config.count })
+}
