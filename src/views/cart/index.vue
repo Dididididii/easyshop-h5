@@ -6,46 +6,46 @@
       fixed
     />
     <!-- 正常的购物车 -->
-    <div class="goodsList" >
-      <van-swipe-cell v-for="i in 6" :key="i">
+    <div class="goodsList" v-if="cartList.length>0" >
+      <van-swipe-cell v-for="item in cartList" :key="item.id">
         <van-card
-          :key="i"
-          num="2"
-          price="2.00"
-          desc="描述信息"
-          title="商品标题"
+          :num="item.count"
+          :price="item.price"
+          :title="item.name"
+          :desc="item.attrsText"
           class="goods-card"
         >
         <template #thumb >
           <div style="display:flex;">
-            <van-checkbox v-model="goodsChecked"></van-checkbox>
+            <van-checkbox v-model="item.selected"></van-checkbox>
             <van-image
+              @click="$router.push(`/goods?id=${item.id}`)"
               style="margin-left: 10px;"
               class="cartImages"
               fit="cover"
-              src="https://img01.yzcdn.cn/vant/cat.jpeg"
+              :src="item.picture"
             />
           </div>
         </template>
       </van-card>
         <template #right>
-          <van-button square text="删除" type="danger" class="delete-button" />
+          <van-button @click="delCarts(item.skuId)" square text="删除" type="danger" class="delete-button" />
         </template>
       </van-swipe-cell>
     </div>
-    <!-- 未登录的购物车 -->
-    <div class="notLogin" v-if="false">
-      <van-empty image="error" description="您还未登录">
-        <van-button round type="danger" class="bottom-button">去登陆</van-button>
-      </van-empty>
-    </div>
     <!-- 登录后购物车无商品 -->
-    <div class="notGoodsList" v-if="false">
+    <div class="notGoodsList" v-else-if="!noneToken">
       <van-empty
         class="custom-image"
         image="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.xabanjan.com%2Ftemplates%2Fshop%2F186%2Fimages%2Fnone.png&refer=http%3A%2F%2Fwww.xabanjan.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1668176201&t=ccadaa10333db2d786588bd14f2d1f45"
         description="去添加点什么吧"
       />
+    </div>
+    <!-- 未登录的购物车 -->
+    <div class="notLogin" v-if="noneToken">
+      <van-empty image="error" description="您还未登录">
+        <van-button round type="danger" class="bottom-button" @click="$router.push(`/login?from=/cart`)">去登陆</van-button>
+      </van-empty>
     </div>
     <footer>
       <van-submit-bar :price="3050" button-text="提交订单" @submit="onSubmit">
@@ -56,17 +56,34 @@
 </template>
 
 <script>
+import { getCart,delCart } from '@/api/cart'
 export default {
     name:'easy-cart',
     data(){
       return {
         checked:false,
-        goodsChecked:false
+        noneToken:false,
+        cartList:[],
+
       }
     },
     methods:{
       onSubmit(){
-
+      },
+      async getCartList() {
+        const res = await getCart()
+        this.cartList = res.result.valids
+      },
+      async delCarts(id) {
+        await delCart({ids:[`${id}`],clearAll:false,clearInvalid:false})
+        this.getCartList()
+      }
+    },
+    created(){
+      if(this.$store.state.user.profile.token) {
+        this.getCartList()
+      } else {
+        this.noneToken = true
       }
     }
 }

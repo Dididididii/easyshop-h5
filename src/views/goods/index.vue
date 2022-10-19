@@ -95,7 +95,7 @@
             <van-goods-action-icon icon="chat-o" text="客服" />
             <van-goods-action-icon icon="shop-o" text="店铺" />
             <van-goods-action-icon :icon="isCollect?'star':'star-o'" :color="isCollect?'red':''" :text="isCollect?'取消收藏':'加入收藏'" @click="updateCollect" />
-            <van-goods-action-button type="warning" text="加入购物车" />
+            <van-goods-action-button type="warning" @click="addCartList" text="加入购物车" />
             <van-goods-action-button type="danger" text="立即购买" />
         </van-goods-action>
     </footer>
@@ -105,6 +105,9 @@
         :goods="goodsList"
         :goods-id="$route.query.id"
         :hide-stock="sku.hide_stock"
+        @add-cart="addCarts"
+        @sku-selected="test"
+        @stepper-change="numChange"
     />
   </div>
 </template>
@@ -113,6 +116,7 @@
 import { getGoods } from '@/api/goods'
 import { ImagePreview } from 'vant';
 import { addCollect,delCollect,getCollect } from '@/api/collect'
+import { addCart } from '@/api/cart'
 import dayjs from 'dayjs'
 var relativeTime = require('dayjs/plugin/relativeTime')
 import * as isLeapYear from 'dayjs/plugin/isLeapYear' // 导入插件
@@ -124,9 +128,14 @@ export default {
     data(){
         return {
             current: 0,
+            item:{
+                skuId:'0',
+                count:1
+            },
             goods:[],
             show:false,
             isCollect:false,
+            isCartCheck:false,
             sku: {
                 // 所有sku规格类目与其值的从属关系，比如商品有颜色和尺码两大类规格，颜色下面又有红色和蓝色两个规格值。
                 // 可以理解为一个商品可以有多个规格类目，一个规格类目下可以有多个规格值。
@@ -275,6 +284,49 @@ export default {
                     this.isCollect = true
                 }
             })
+        },
+        async addCarts(e){
+            if(this.$store.state.user.profile.token) {
+                try {
+                    await addCart({skuId:e.selectedSkuComb.id,count:e.selectedNum})
+                    this.$toast('加入购物车成功')
+                } catch (error) {
+                    this.$toast(error.response.data.message)
+                }
+            } else {
+                this.$toast('你还未登录，请登录再操作')
+                this.$router.push(`/login?from=${this.$route.fullPath}`)
+            }
+        },
+        test(e) {
+            if(e.selectedSkuComb) {
+                // console.log(e.selectedSkuComb);
+                this.item.skuId = e.selectedSkuComb.id
+                this.isCartCheck = true
+            } else {
+                this.isCartCheck = false
+            }
+        },
+        async addCartList() {
+            if(this.$store.state.user.profile.token) {
+                if(this.isCartCheck) {
+                    // console.log(this.item);
+                    try {
+                        await addCart(this.item)
+                        this.$toast('加入购物车成功')
+                    } catch (error) {
+                        this.$toast(error.response.data.message)
+                    }
+                } else {
+                    this.show = true
+                }
+            } else {
+                this.$toast('你还未登录，请登录再操作')
+                this.$router.push(`/login?from=${this.$route.fullPath}`)
+            }
+        },
+        numChange(e) {
+            this.item.count = e
         }
     },
     created() {

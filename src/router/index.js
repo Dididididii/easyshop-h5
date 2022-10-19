@@ -59,8 +59,8 @@ router.beforeEach((to, from, next) => {
     }
   }
 
-  if(to.path === '/cart' || to.path === '/contact' || to.path === '/collect') {
-    // 去购物车/个人中心页
+  if(to.path === '/contact' || to.path === '/collect') {
+    // 个人中心页
     if(store.state.user.profile.token) {
       next()
     } else {
