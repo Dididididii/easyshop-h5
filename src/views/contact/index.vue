@@ -28,7 +28,7 @@
     </div>
     <van-popup v-model="setShow" position="right" :style="{ height: '100%' , width:'100%' }" closeable >
       <div class="setBox">
-        <div class="userInfo" @click="updateShow=true">
+        <div class="userInfo" @click="updateUser(1)">
           <van-image
             class="setPhoto"
             fit="cover"
@@ -43,7 +43,7 @@
             <van-icon class="right"  name="arrow" />
           </div>
       </div>
-        <div class="address" @click="updateShow=true">
+        <div class="address" @click="updateUser(2)">
           <div class="userInfo">
             <div class="userBox">
               <div class="userName">
@@ -53,7 +53,7 @@
             </div>
           </div>
         </div>
-        <div class="security" @click="updateShow=true">
+        <div class="security" @click="updateUser(3)">
           <div class="userInfo">
             <div class="userBox">
               <div class="userName">
@@ -67,13 +67,13 @@
       <van-button  type="default" block size="small" @click="toBack">退出登录</van-button>
       <van-popup v-model="updateShow" position="right" :style="{ height: '100%', width:'100%' }" >
         <van-nav-bar
-          title="标题"
+          :title="title"
           left-arrow
           @click-left="updateShow=false"
         />
         <div class="updateBox" >
            <!-- 修改用户名的 -->
-          <div class="upateUser" v-if="false">
+          <div class="upateUser" v-if="active === 1">
             <div class="photoBox">
             <van-image
             class="photo"
@@ -101,26 +101,29 @@
           </van-popup>
           </div>
           <!-- 查看收货地址 -->
-          <div class="updateAddress" >
+          <div class="updateAddress" v-else-if="active===2" >
             <van-address-list
               v-model="chosenAddressId"
               :list="list"
               default-tag-text="默认"
               @add="onAdd"
               @edit="onEdit"
+              @select="selectCheck"
             />
             <van-popup v-model="addressShow" position="right" :style="{ height: '100%', width:'100%' }"  >
             <div>
               <van-nav-bar
-                title="标题"
+                :title="`${newAddss?'添加':'修改'}`+'地址'"
                 left-arrow
                 @click-left="addressShow=false"
               />
               <div>
                 <van-address-edit
+                  @change-area="test"
                   :area-list="areaList"
                   show-postal
-                  show-delete
+                  :address-info="addressInfo"
+                  :show-delete="!newAddss"
                   show-set-default
                   show-search-result
                   :search-result="searchResult"
@@ -141,6 +144,8 @@
 </template>
 
 <script>
+import { areaList } from '@vant/area-data';
+import { getAddress,addAddress,updateAddress,delAddress } from '@/api/contact'
 export default {
     name:'easy-Contact',
     data(){
@@ -179,35 +184,76 @@ export default {
             name:'after-sale'
           }
         ],
+        addressInfo:{
+          id:'0',
+          name:'',
+          tel:'',
+          province:'',
+          city:'',
+          county:'',
+          addressDetail:'',
+          areaCode:'',
+          postalCode:'',
+          isDefault:false
+        },	
+        active:0,
+        addressList:[],
+        title:'',
         setShow:false,
         updateShow:false,
+        newAddss:false,
         show:false,
         value:'',
         chosenAddressId: '1',
         addressShow:false,
-        areaList:{
-          110000: '北京市',
-          120000: '天津市',
-        },
+        areaList,
         searchResult: [],
-        list: [
-          {
-            id: '1',
-            name: '张三',
-            tel: '13000000000',
-            address: '浙江省杭州市西湖区文三路 138 号东方通信大厦 7 楼 501 室',
-            isDefault: true,
-          },
-          {
-            id: '2',
-            name: '李四',
-            tel: '1310000000',
-            address: '浙江省杭州市拱墅区莫干山路 50 号',
-          },
-        ]
+        list: [],
+        addressId:''
       }
     },
     methods:{
+      test(e){
+        console.log(e);
+      },
+      selectCheck(item,index){
+        this.list.forEach(item => {
+          item.isDefault=false
+        })
+        this.list[index].isDefault=true
+        this.list.splice(index,1)
+        this.list.unshift(item)
+      },
+      async getUserAddress() {
+        this.list = []
+        const {result} = await getAddress()
+        result.forEach(item => {
+          this.list.unshift(
+            {
+              id:item.id,
+              name:item.receiver,
+              tel:item.contact,
+              address:item.provinceCode+item.cityCode+item.countyCode+item.address,
+              isDefault:false
+            }
+          )
+        })
+        this.addressList = result.reverse()
+        this.chosenAddressId = this.list[0].id
+        this.list[0].isDefault= true
+      },
+      updateUser(val) {
+        this.updateShow= true
+        this.active = val
+        if(val === 1) {
+          this.title = '修改用户资料'
+        } else if (val===2) {
+          this.title = '我的收货地址'
+          this.getUserAddress()
+        } else {
+          this.title = '账号安全'
+        }
+      },
       toCollect(title) {
         if(title === '收藏') {
           this.$router.push('/collect')
@@ -219,17 +265,93 @@ export default {
         this.$router.push('/')
       },
       onAdd() {
-        this.$toast('新增地址');
+        // this.$toast('新增地址');
+        this.addressShow = true
+        this.newAddss = true
       },
-      onEdit() {
+      onEdit(e,index) {
         this.addressShow=true
-        // this.$toast('编辑地址:' + index);
+        this.newAddss = false
+        const config = this.addressList[index]
+        this.addressId = config.id
+        this.addressInfo = { 
+          id:config.id,
+          name:config.receiver,
+          tel:config.contact,
+          province:config.provinceCode,
+          city:config.cityCode,
+          county:config.countyCode,
+          addressDetail:config.address,
+          areaCode:'110100',
+          postalCode:config.postalCode,
+          isDefault:config.isDefault===0
+        }
       },
-      onSave() {
-        this.$toast('save');
+      async onSave(e) {
+        const config = {
+            receiver:e.name,
+            contact:e.tel,
+            provinceCode:e.province,
+            cityCode:e.city,
+            countyCode:e.county,
+            address:e.addressDetail,
+            postalCode:e.postalCode,
+            addressTags:'家',
+            isDefault:e.isDefault?0:1
+        }
+        if(this.newAddss){
+          //新增
+          try {
+            await addAddress(config)
+            this.$toast('添加地址成功')
+          } catch (error) {
+            this.$toast(error.response.data.message)
+          }
+        } else{
+          // 修改
+          try {
+            await updateAddress(this.addressId,config)
+            this.$toast('地址修改成功')
+          } catch (error) {
+            this.$toast(error.response.data.message)
+          }
+        }
+        this.getUserAddress()
+        this.addressShow = false
+        this.addressInfo = { 
+          id:'0',
+          name:'',
+          tel:'',
+          province:'',
+          city:'',
+          county:'',
+          addressDetail:'',
+          areaCode:'',
+          postalCode:'',
+          isDefault:false
+        }
       },
-      onDelete() {
-        this.$toast('delete');
+      async onDelete() {
+        try {
+            await delAddress(this.addressId)
+            this.$toast('地址删除成功')
+          } catch (error) {
+            this.$toast(error.response.data.message)
+          }
+        this.getUserAddress()
+        this.addressShow = false
+        this.addressInfo = { 
+          id:'0',
+          name:'',
+          tel:'',
+          province:'',
+          city:'',
+          county:'',
+          addressDetail:'',
+          areaCode:'',
+          postalCode:'',
+          isDefault:false
+        }
       },
       onChangeDetail(val) {
         if (val) {
@@ -243,6 +365,8 @@ export default {
           this.searchResult = [];
         }
       },
+    },
+    created(){
     }
 }
 </script>
