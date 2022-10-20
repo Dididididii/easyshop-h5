@@ -110,7 +110,7 @@
               @edit="onEdit"
               @select="selectCheck"
             />
-            <van-popup v-model="addressShow" position="right" :style="{ height: '100%', width:'100%' }"  >
+            <!-- <van-popup v-model="addressShow" position="right" :style="{ height: '100%', width:'100%' }"  >
             <div>
               <van-nav-bar
                 :title="`${newAddss?'添加':'修改'}`+'地址'"
@@ -118,8 +118,7 @@
                 @click-left="addressShow=false"
               />
               <div>
-                <van-address-edit
-                  @change-area="test"
+                <van-address-edit                  
                   :area-list="areaList"
                   show-postal
                   :address-info="addressInfo"
@@ -134,10 +133,10 @@
                 />
               </div>
             </div>
-          </van-popup>
+          </van-popup> -->
+          <easyPopup :address-info="addressInfo" :addressShow="addressShow" :newAddss="newAddss" :searchResult="searchResult" @save="onSave" @delete="onDelete" @closePopup="(e)=>addressShow=e" />
           </div>
         </div>
-        
       </van-popup>
     </van-popup>
   </div>
@@ -145,8 +144,10 @@
 
 <script>
 import { areaList } from '@vant/area-data';
+import easyPopup from '@/components/easy-popup.vue'
 import { getAddress,addAddress,updateAddress,delAddress } from '@/api/contact'
 export default {
+    components:{easyPopup},
     name:'easy-Contact',
     data(){
       return {
@@ -213,9 +214,6 @@ export default {
       }
     },
     methods:{
-      test(e){
-        console.log(e);
-      },
       selectCheck(item,index){
         this.list.forEach(item => {
           item.isDefault=false
@@ -239,8 +237,10 @@ export default {
           )
         })
         this.addressList = result.reverse()
-        this.chosenAddressId = this.list[0].id
-        this.list[0].isDefault= true
+        if(this.list.length>0) {
+          this.chosenAddressId = this.list[0].id
+          this.list[0].isDefault= true
+        }
       },
       updateUser(val) {
         this.updateShow= true
@@ -268,6 +268,18 @@ export default {
         // this.$toast('新增地址');
         this.addressShow = true
         this.newAddss = true
+        this.addressInfo={
+          id:'0',
+          name:'',
+          tel:'',
+          province:'',
+          city:'',
+          county:'',
+          addressDetail:'',
+          areaCode:'',
+          postalCode:'',
+          isDefault:false
+        }
       },
       onEdit(e,index) {
         this.addressShow=true
@@ -288,6 +300,7 @@ export default {
         }
       },
       async onSave(e) {
+        console.log(e);
         const config = {
             receiver:e.name,
             contact:e.tel,
@@ -352,21 +365,7 @@ export default {
           postalCode:'',
           isDefault:false
         }
-      },
-      onChangeDetail(val) {
-        if (val) {
-          this.searchResult = [
-            {
-              name: '黄龙万科中心',
-              address: '杭州市西湖区',
-            },
-          ];
-        } else {
-          this.searchResult = [];
-        }
-      },
-    },
-    created(){
+      }
     }
 }
 </script>
