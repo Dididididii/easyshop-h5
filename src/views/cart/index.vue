@@ -17,7 +17,7 @@
         >
         <template #thumb >
           <div style="display:flex;">
-            <van-checkbox v-model="item.selected"></van-checkbox>
+            <van-checkbox @change="(e)=>onCheckChange(e,item.skuId,item.count)" v-model="item.selected"></van-checkbox>
             <van-image
               @click="$router.push(`/goods?id=${item.id}`)"
               style="margin-left: 10px;"
@@ -28,7 +28,7 @@
           </div>
         </template>
         <template #num >
-          <van-stepper v-model="item.count" @change="(e)=> onChange(e,item.skuId)" />
+          <van-stepper v-model="item.count" @change="(e)=> onChange(e,item.skuId,item.selected)" />
         </template>
       </van-card>
         <template #right>
@@ -70,9 +70,12 @@ export default {
       }
     },
     methods:{
-      async onChange(e,id){
+      async onCheckChange(e,id,count) {
+        await updatCart({id,count,selected:e})
+      },
+      async onChange(e,id,selected){
         // console.log(e,id);
-        await updatCart({id,count:e})
+        await updatCart({id,count:e,selected})
       },
       onSubmit(){
         this.$router.push('/place')

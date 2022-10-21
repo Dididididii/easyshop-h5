@@ -25,5 +25,5 @@ export const delCart = (config) =>{
  * 修改购物车商品
  */
 export const updatCart = (config) =>{
-    return request(`/member/cart/${config.id}`,'put',{ count:config.count })
+    return request(`/member/cart/${config.id}`,'put',{ selected:config.selected , count:config.count })
 }

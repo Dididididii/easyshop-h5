@@ -96,7 +96,7 @@
             <van-goods-action-icon icon="shop-o" text="店铺" />
             <van-goods-action-icon :icon="isCollect?'star':'star-o'" :color="isCollect?'red':''" :text="isCollect?'取消收藏':'加入收藏'" @click="updateCollect" />
             <van-goods-action-button type="warning" @click="addCartList" text="加入购物车" />
-            <van-goods-action-button type="danger" text="立即购买" />
+            <van-goods-action-button type="danger" @click="toPay" text="立即购买" />
         </van-goods-action>
     </footer>
     <van-sku
@@ -107,6 +107,7 @@
         :hide-stock="sku.hide_stock"
         @add-cart="addCarts"
         @sku-selected="test"
+        @buy-clicked="toPay"
         @stepper-change="numChange"
     />
   </div>
@@ -136,6 +137,7 @@ export default {
             show:false,
             isCollect:false,
             isCartCheck:false,
+            isPayCheck:false,
             sku: {
                 // 所有sku规格类目与其值的从属关系，比如商品有颜色和尺码两大类规格，颜色下面又有红色和蓝色两个规格值。
                 // 可以理解为一个商品可以有多个规格类目，一个规格类目下可以有多个规格值。
@@ -304,8 +306,10 @@ export default {
                 // console.log(e.selectedSkuComb);
                 this.item.skuId = e.selectedSkuComb.id
                 this.isCartCheck = true
+                this.isPayCheck = true
             } else {
                 this.isCartCheck = false
+                this.isPayCheck = false
             }
         },
         async addCartList() {
@@ -318,6 +322,44 @@ export default {
                     } catch (error) {
                         this.$toast(error.response.data.message)
                     }
+                } else {
+                    this.show = true
+                }
+            } else {
+                this.$toast('你还未登录，请登录再操作')
+                this.$router.push(`/login?from=${this.$route.fullPath}`)
+            }
+        },
+        toPay(e){
+            if(this.$store.state.user.profile.token) {
+                if(this.isPayCheck) {
+                    let desc = ''
+                    let picture = ''
+                    e.selectedSkuComb.specs.forEach((item,index)=>{
+                        desc = desc+item.name+':'+item.valueName+' '
+                        this.goods.specs[index].values.forEach(goods=>{
+                            if(goods.name===item.valueName) {
+                                if(goods.picture) {
+                                    picture = goods.picture
+                                }
+                            }
+                        })
+                    })
+                    const good = {
+                        id:e.goodsId,
+                        name:this.goods.name,
+                        specs:[
+                            {
+                                skuId:e.selectedSkuComb.id,
+                                price:e.selectedSkuComb.price,
+                                desc,
+                                count:e.selectedNum,
+                                picture
+                            }
+                        ]
+                    }
+                    this.$store.commit('goods/setGoodsList',good)
+                    this.$router.push('/place')
                 } else {
                     this.show = true
                 }

@@ -8,6 +8,7 @@
       @click-left="$router.go(-1)"
     />
     <div class="box">
+      <!-- 收货地址 -->
       <div class="AddressList">
         <van-address-list
           @select="selectChange"
@@ -23,6 +24,20 @@
             </div>
           </template>
         </van-address-list>
+      </div>
+      <!-- 商品列表 -->
+      <div class="goodsList">
+        <div class="goodsItem" v-for="goods in $store.state.goods.goodsList" :key="goods.id">
+          <van-card
+            @click="$router.push(`/goods?id=${goods.id}`)"
+            v-for="item in goods.specs"
+            :key="item.id"
+            :num="item.count"
+            :price="item.price/100"
+            :desc="item.desc"
+            :title="goods.name"
+            :thumb="item.picture"/>
+        </div>
       </div>
     </div>
     <easyPopup :address-info="addressInfo" :addressShow="addressShow" :newAddss="newAddss" :searchResult="searchResult" @closePopup="closePopup" @save="onSave" @delete="onDelete" />
@@ -207,11 +222,15 @@ export default {
     },
     created() {
       this.getUserAddress()
+      console.log(this.$store.state.goods.goodsList);
     }
 }
 </script>
 
 <style lang="less" scoped>
+.van-address-list {
+  padding: 12px;
+}
 .Addressbtn{
   margin-top: 10px;
   border-radius: 30px;

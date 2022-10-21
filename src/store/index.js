@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import user from './modules/user'
 import cate from './modules/cate'
 import createPersistedstate from 'vuex-persistedstate'
+import goods from './modules/goods'
 
 Vue.use(Vuex)
 
@@ -17,12 +18,13 @@ export default new Vuex.Store({
   },
   modules: {
     user,
-    cate
+    cate,
+    goods
   },
   plugins:[
     createPersistedstate({
       key:'easy-shop-h5-store',
-      paths:['user','cate']
+      paths:['user','cate','goods']
     })
   ]
 })
