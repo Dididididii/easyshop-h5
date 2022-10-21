@@ -78,6 +78,27 @@ export default {
         await updatCart({id,count:e,selected})
       },
       onSubmit(){
+        // let checkList = this.cartList.filter(item=>item.selected)
+        let goodsList = []
+        // console.log(this.cartList.filter(item=>item.selected));
+        this.cartList.forEach(item=>{
+          if(item.selected) {
+            goodsList.push({
+              id:item.id,
+              name:item.name,
+              specs:[
+              {
+                skuId:item.skuId,
+                price:(item.price+0)*100,
+                desc:item.attrsText,
+                count:item.count,
+                picture:item.picture
+              }
+              ]
+            })
+          }
+        })
+        this.$store.commit('goods/setGoodsList',goodsList)
         this.$router.push('/place')
       },
       async getCartList() {

@@ -345,7 +345,7 @@ export default {
                             }
                         })
                     })
-                    const good = {
+                    const good = [{
                         id:e.goodsId,
                         name:this.goods.name,
                         specs:[
@@ -357,7 +357,7 @@ export default {
                                 picture
                             }
                         ]
-                    }
+                    }]
                     this.$store.commit('goods/setGoodsList',good)
                     this.$router.push('/place')
                 } else {

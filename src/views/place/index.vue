@@ -27,7 +27,7 @@
       </div>
       <!-- 商品列表 -->
       <div class="goodsList">
-        <div class="goodsItem" v-for="goods in $store.state.goods.goodsList" :key="goods.id">
+        <div class="goodsItem" v-for="goods in $store.state.goods.goodsList" :key="goods.specs.skuId">
           <van-card
             @click="$router.push(`/goods?id=${goods.id}`)"
             v-for="item in goods.specs"
@@ -41,6 +41,8 @@
       </div>
     </div>
     <easyPopup :address-info="addressInfo" :addressShow="addressShow" :newAddss="newAddss" :searchResult="searchResult" @closePopup="closePopup" @save="onSave" @delete="onDelete" />
+    <van-submit-bar :price="price" button-text="提交订单" safe-area-inset-bottom	 />
+
   </div>
 </template>
 
@@ -223,11 +225,27 @@ export default {
     created() {
       this.getUserAddress()
       console.log(this.$store.state.goods.goodsList);
+    },
+    computed:{
+      price() {
+      let num = 0
+      this.$store.state.goods.goodsList.forEach(item => {
+        num = num+item.specs[0].price/100*item.specs[0].count*100
+        // console.log(item);
+      })
+      return num
+    }
     }
 }
 </script>
 
 <style lang="less" scoped>
+.goodsItem{
+  margin-top: 10px;
+}
+.goodsList{
+  margin-bottom: 55px;
+}
 .van-address-list {
   padding: 12px;
 }

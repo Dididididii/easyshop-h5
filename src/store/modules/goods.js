@@ -6,7 +6,7 @@ export default {
     mutations: {
         setGoodsList(state,payload) {
             state.goodsList = []
-            state.goodsList.push(payload)
+            state.goodsList=payload
         }
     },
     actions: {
