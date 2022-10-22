@@ -5,7 +5,7 @@
       placeholder 
       fixed
       left-arrow
-      @click-left="$router.go(-1)"
+      @click-left="goBack"
     />
     <div class="box">
       <!-- 收货地址 -->
@@ -37,17 +37,51 @@
             :desc="item.desc"
             :title="goods.name"
             :thumb="item.picture"/>
+            <van-cell is-link>
+              <!-- 使用 title 插槽来自定义标题 -->
+              <template #title>
+                <span class="custom-title">配送服务</span>
+              </template>
+              <template #default>
+                <span class="custom-value">快递 免邮</span>
+              </template>
+            </van-cell>
+            <van-field v-model="text" label="订单备注" placeholder="无备注" input-align="right" />
         </div>
+      </div>
+      <!-- 支付方式 -->
+      <div class="payload">
+        <van-cell>
+              <!-- 使用 title 插槽来自定义标题 -->
+              <template #title>
+                <span class="custom-title">支付方式</span>
+              </template>
+              <template #default>
+                <div class="checkBox">
+                  <van-radio-group v-model="payLoad">
+                    <van-radio name="1">在线支付</van-radio>
+                    <van-radio name="2">货到付款</van-radio>
+                  </van-radio-group>
+                </div>
+                <div class="checkBox" v-if="payLoad==='1'">
+                  <van-radio-group v-model="radio">
+                    <van-radio name="1">支付宝付</van-radio>
+                    <van-radio name="2">微信支付</van-radio>
+                  </van-radio-group>
+                </div>
+              </template>
+            </van-cell>
       </div>
     </div>
     <easyPopup :address-info="addressInfo" :addressShow="addressShow" :newAddss="newAddss" :searchResult="searchResult" @closePopup="closePopup" @save="onSave" @delete="onDelete" />
-    <van-submit-bar :price="price" button-text="提交订单" safe-area-inset-bottom	 />
+    <van-submit-bar :price="price" @submit="onSubmit" button-text="提交订单" safe-area-inset-bottom	 />
 
   </div>
 </template>
 
 <script>
 import easyPopup from '@/components/easy-popup.vue'
+import {postGoodsList,postPay} from '@/api/pay'
 import { areaList } from '@vant/area-data';
 import { getAddress,delAddress,addAddress,updateAddress } from '@/api/contact'
 export default {
@@ -55,6 +89,9 @@ export default {
     name:'easy-Place',
     data() {
       return {
+        payLoad:'1',
+        radio: '1',
+        text:'',
         addressShow:false,
         chosenAddressId:'1',
         list: [],
@@ -79,6 +116,38 @@ export default {
       }
     },
     methods:{
+      async onSubmit() {
+        if(this.checkList.length===1) {
+          let config = {
+            goods:[],
+            addressId:this.checkList[0].id,
+            deliveryTimeType:1,
+            payType:this.payLoad*1,
+            payChannel:this.payLoad==='1'?this.radio*1:'',
+            buyerMessage:this.text
+          }
+          
+          this.$store.state.goods.goodsList.forEach(item=>{
+            item.specs.forEach(goods=>{
+              config.goods.push(
+                {
+                  skuId:goods.skuId,
+                  count:goods.count
+                }
+              )
+            })
+          })
+          const res = await postGoodsList(config)
+          const data = await postPay(res.result.id)
+          console.log(data);
+        } else {
+          this.$toast('请选择收货地址')
+        }
+      },
+      goBack() {
+        this.$store.commit('goods/setGoodsList',[])
+        this.$router.go(-1)
+      },
       onAdd() {
         // this.$toast('新增地址');
         this.addressShow = true
@@ -240,10 +309,23 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.van-radio{
+  margin: 10px 0;
+  font-size: 16px;
+}
+.checkBox{
+  float: right;
+}
+.custom-value {
+  color:#000;
+
+}
 .goodsItem{
+  background-color: #fff;
   margin-top: 10px;
 }
-.goodsList{
+.payload{
+  margin-top: 10px;
   margin-bottom: 55px;
 }
 .van-address-list {

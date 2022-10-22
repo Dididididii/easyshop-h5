@@ -73,6 +73,13 @@ router.beforeEach((to, from, next) => {
   } else{
     next()
   }
+  if(to.path === '/place') {
+    if(store.state.goods.goodsList.length>0) {
+      next()
+    } else {
+      router.push(`/`)
+    }
+  }
   
 })
 export default router

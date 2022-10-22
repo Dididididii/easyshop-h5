@@ -78,26 +78,66 @@ export default {
         await updatCart({id,count:e,selected})
       },
       onSubmit(){
-        // let checkList = this.cartList.filter(item=>item.selected)
-        let goodsList = []
+        let checkList = this.cartList.filter(item=>item.selected)
+        let goodsList = [],
+            map={}
         // console.log(this.cartList.filter(item=>item.selected));
-        this.cartList.forEach(item=>{
-          if(item.selected) {
-            goodsList.push({
-              id:item.id,
-              name:item.name,
-              specs:[
+        for(let i = 0; i<checkList.length;i++) {
+          let ai = checkList[i]
+          // console.log(ai);
+          if(!map[ai.id]){
+            goodsList.push(
               {
-                skuId:item.skuId,
-                price:(item.price+0)*100,
-                desc:item.attrsText,
-                count:item.count,
-                picture:item.picture
+                id:ai.id,
+                name:ai.name,
+                specs: [
+                  {
+                    skuId:ai.skuId,
+                    price:(ai.price+0)*100,
+                    desc:ai.attrsText,
+                    count:ai.count,
+                    picture:ai.picture
+                  }
+                ]
               }
-              ]
-            })
+            )
+            map[ai.id] =ai
+          } else {
+            for(let j =0;j<goodsList.length;j++) {
+              let dj = goodsList[j]
+              if(dj.id === ai.id) {
+                dj.specs.push(
+                  {
+                    skuId:ai.skuId,
+                    price:(ai.price+0)*100,
+                    desc:ai.attrsText,
+                    count:ai.count,
+                    picture:ai.picture
+                  }
+                )
+                break
+              }
+            }
           }
-        })
+        }
+        // console.log(goodsList);
+        // this.cartList.forEach(item=>{
+        //   if(item.selected) {
+        //     goodsList.push({
+        //       id:item.id,
+        //       name:item.name,
+        //       specs:[
+        //       {
+        //         skuId:item.skuId,
+        //         price:(item.price+0)*100,
+        //         desc:item.attrsText,
+        //         count:item.count,
+        //         picture:item.picture
+        //       }
+        //       ]
+        //     })
+        //   }
+        // })
         this.$store.commit('goods/setGoodsList',goodsList)
         this.$router.push('/place')
       },

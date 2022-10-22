@@ -12,7 +12,7 @@
           @click="$router.push('/search')"
         >
           <template #action>
-            <div  class="searchBtn">登录</div>
+            <div v-if="!$store.state.user.profile.token" @click="$router.push('/login?from=/')" class="searchBtn">登录</div>
           </template>
         </van-search>
       </header>
