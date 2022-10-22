@@ -115,7 +115,7 @@
         async getCateLista () {
           this.moveList=[]
           const list = {id:0,name:'首页'}
-          const res = await getCateList('/home/category/head')
+          const res = await getCateList()
           this.navbsList = res.result
           this.navbsList.unshift(
             list
@@ -155,6 +155,10 @@
         onRefresh() {
           this.simples=[]
           this.likeList=[]
+          this.config = {
+            page:1,
+            pageSize:10
+          }
           this.getSimples()
           this.getUserLikes()
           this.$toast('刷新成功');

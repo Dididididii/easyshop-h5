@@ -46,6 +46,10 @@ const routes = [
   {
     path:'/place',
     component:()=>import('@/views/place/index.vue')
+  },
+  {
+    path:'/goodslist',
+    component:()=>import('@/views/searchGoods/index.vue')
   }
 ]
 

@@ -9,6 +9,7 @@
                 placeholder="请输入商品名称"
                 @cancel="toBack"
                 @input="getTips"
+                @search="searchGoods"
             />
         </form>
     </nav>
@@ -70,7 +71,7 @@
 </template>
 
 <script>
-import { getSearchTips } from '@/api/search'
+// import { searchGoods } from '@/api/search'
 export default {
     name:"easy-Search",
     data(){
@@ -82,7 +83,7 @@ export default {
         toBack(){
             this.$router.go(-1)
         },
-        getTips(e) {
+        getTips() {
             let timer = null
             if(timer !== null){
                 clearTimeout(timer)
@@ -90,9 +91,24 @@ export default {
             }
             timer = setTimeout(async () => {
                 // console.log(e)
-                const res = await getSearchTips(e)
-                console.log(res);
+                // const res = await getSearchTips(e)
+                // console.log(res);
             },500)
+        },
+        async searchGoods() {
+            // let config = {
+            //     page:1,
+            //     pageSize:10,
+            //     keyword:e,
+            //     associatedIds:[],
+            //     categoryId:'',
+            //     brandId:'',
+            //     onlyDiscount:false,
+            //     sortField:'',
+            //     sortMethod:'desc'
+            // }
+            // await searchGoods(config)
+            this.$router.push('/goodslist')
         }
     }
 }

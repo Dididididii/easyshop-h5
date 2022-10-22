@@ -6,3 +6,10 @@ import request from "@/utils/request";
 export const getSearchTips = (keyword) =>{
     return request('/search/tips','get',{ keyword })
 }
+
+/**
+ * 搜索商品
+ */
+export const searchGoods = (config) => {
+    return request('/search/all','POST',{...config})
+}
