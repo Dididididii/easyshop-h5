@@ -25,6 +25,13 @@ export const getSimple = () => {
 /**
  * 获取推荐商品
  */
-export const  getUserLike = (config) => {
+export const getUserLike = (config) => {
     return request('/home/goods/guessLike','get', {...config})
+}
+
+/**
+ * 获取爆款推荐
+ */
+export const getInVogue = () => {
+    return request('/home/inVogue','get')
 }

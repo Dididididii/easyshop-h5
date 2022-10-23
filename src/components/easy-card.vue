@@ -1,5 +1,5 @@
 <template>
-  <div :style="{display:'flex', flexWrap: warp?'wrap':'nowrap',justifyContent: 'space-around'}">
+  <div v-if="goodsList.length>0" :style="{display:'flex', flexWrap: warp?'wrap':'nowrap',justifyContent: 'space-around'}">
     <div class="goodsCard" v-for="item in goodsList" :key="item.id" @click="toGoods(item.id)">
         <van-image
             class="goodsImage"
