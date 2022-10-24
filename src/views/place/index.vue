@@ -81,7 +81,7 @@
 
 <script>
 import easyPopup from '@/components/easy-popup.vue'
-import {postGoodsList,postPay} from '@/api/pay'
+import {postGoodsList} from '@/api/pay'
 import { areaList } from '@vant/area-data';
 import { getAddress,delAddress,addAddress,updateAddress } from '@/api/contact'
 export default {
@@ -138,8 +138,7 @@ export default {
             })
           })
           const res = await postGoodsList(config)
-          const data = await postPay(res.result.id)
-          console.log(data);
+          this.$router.push(`/pay?orderId=${res.result.id}`)
         } else {
           this.$toast('请选择收货地址')
         }

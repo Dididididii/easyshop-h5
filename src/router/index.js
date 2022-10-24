@@ -50,6 +50,30 @@ const routes = [
   {
     path:'/goodslist',
     component:()=>import('@/views/searchGoods/index.vue')
+  },
+  {
+    path:'/pay',
+    component:()=>import('@/views/pay/index.vue'),
+  },
+  {
+    path:'/pay/callback',
+    component:()=>import('@/views/pay/components/callback.vue'),
+  },
+  {
+    path:'/payment',
+    component:()=>import('@/views/payment/index.vue'),
+  },
+  {
+    path:'/sendorder',
+    component:()=>import('@/views/sendOrder/index.vue'),
+  },
+  {
+    path:'/forgoods',
+    component:()=>import('@/views/forgoods/index.vue'),
+  },
+  {
+    path:'/vieworder',
+    component:()=>import('@/views/vieworder/index.vue'),
   }
 ]
 

@@ -210,10 +210,12 @@ export default {
         areaList,
         searchResult: [],
         list: [],
-        addressId:''
+        addressId:'',
+        
       }
     },
     methods:{
+      
       selectCheck(item,index){
         this.list.forEach(item => {
           item.isDefault=false
@@ -257,6 +259,12 @@ export default {
       toCollect(title) {
         if(title === '收藏') {
           this.$router.push('/collect')
+        } else if (title === '待付款') {
+          this.$router.push('/payment')
+        } else if (title === '待发货') {
+          this.$router.push('/sendorder')
+        } else if (title === '待收货') {
+          this.$router.push('/forgoods')
         }
       },
       toBack(){

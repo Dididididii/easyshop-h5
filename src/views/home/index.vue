@@ -151,7 +151,6 @@
             this.num = index
             this.title = this.recommendList[index].title
             this.simples = this.recommendList[index].goods
-            console.log(this.simples);
           } else {
             this.num = 4
             this.simples = []
@@ -205,7 +204,6 @@
             goods:result.items,
             picture:result.items[0].picture
           })
-          console.log(this.recommendList);
         },
         async getUserLikes() {
           const res = await getUserLike(this.config)
