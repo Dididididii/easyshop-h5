@@ -78,9 +78,10 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
-  routes
+  scrollBehavior: () => ({ y: 0 }),
+  routes 
 })
 router.beforeEach((to, from, next) => {
   if(to.path === '/login') {
